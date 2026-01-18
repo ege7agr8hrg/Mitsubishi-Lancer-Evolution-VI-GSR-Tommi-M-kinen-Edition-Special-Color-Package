@@ -1,0 +1,32 @@
+#nav{
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    left: -5px;
+    justify-content: space-around;
+}
+#logo{
+    position: relative;
+    left: 240px;
+}
+#nav img{
+    position: relative;
+    top: -10px;
+}
+#nav button{
+    background: none;
+    border: none;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 17px;
+    cursor: pointer;
+}
+#navcontent{
+    position: relative;
+    left: -300px;
+}
+
+#main
