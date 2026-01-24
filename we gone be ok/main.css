@@ -1,15 +1,21 @@
 #nav{
     display: flex;
-    border-bottom: 1px solid #ccc;
     height: 50px;
     width: 100%;
     position: fixed;
     left: -5px;
+    top: 10px;
     justify-content: space-around;
+}
+body{
+    font-family: saks;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 #logo{
     position: relative;
-    left: 240px;
+    left: 680px;
 }
 #nav img{
     position: relative;
@@ -24,7 +30,47 @@
     font-size: 17px;
     cursor: pointer;
 }
+.left{
+ transition: all 0.2s ease-in-out;
+ transform-origin: right;
+}
+.left:hover{
+    transform: scale(2);
+    margin-left: 80px;
+    
+}
+.right{
+ transition: all 0.2s ease-in-out;
+ transform-origin: left;
+}
+.right:hover{
+    transform: scale(2);
+    margin-right: 80px;
+}
 #navcontent{
-    position: relative;
-    left: -300px;
+    position: fixed;
+    left: 20px;
+    border: 1px solid rgba(188, 188, 188, 0.382);
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.115);
+    justify-content: center;
+}
+@font-face {
+    font-family: saks;
+    src: url(../font/SF-Pro.ttf);
+}
+#footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(128, 128, 128, 0.58);
+    padding: 5px 0;
+}
+#whatever{
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 0px;
 }
