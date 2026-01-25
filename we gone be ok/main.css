@@ -14,12 +14,13 @@ body{
     padding: 0;
 }
 #logo{
-    position: relative;
-    left: 680px;
+    position: fixed;
+    left: 360px;
 }
 #nav img{
-    position: relative;
-    top: -10px;
+    position: fixed;
+    top: -5px;
+    left: 680px;
 }
 #nav button{
     background: none;
@@ -30,6 +31,29 @@ body{
     font-size: 17px;
     cursor: pointer;
 }
+#navcart{
+    position: fixed;
+    left: 1300px;
+    border: 1px solid rgba(188, 188, 188, 0.382);
+    border-radius: 55px;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background-color: rgba(188, 188, 188, 0.382);
+    transition: all 0.2s ease-in-out;
+}
+/* #navcart svg:hover{
+    width: 24px;
+    height: 24px;
+}
+#cart-count{
+    display: none;
+    position: fixed;
+    left: 1380px;
+    top: 22px;
+    font-size: 25px;
+
+} */
 .left{
  transition: all 0.2s ease-in-out;
  transform-origin: right;
