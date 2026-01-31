@@ -17,3 +17,4 @@ function inputservice() {
 function inputhome() {
     window.location.href = "Main.html";
 }
+// Manager helpers (navigation only)

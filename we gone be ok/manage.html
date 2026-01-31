@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="main.css">
+    <style>
+
+        #manage-container { margin-top: 90px; padding: 20px; max-width: 1100px;width: 100%; margin-right: 10px; }
+        .manage-section { background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        @media (max-width: 800px) { .two-column { grid-template-columns: 1fr; } }
+        .form-group { margin-bottom: 12px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .product-card { border: 1px solid #eee; padding: 12px; border-radius: 6px; background: #fafafa; }
+        .product-actions { display:flex; gap:8px; margin-top:10px }
+        .btn { padding:8px 10px; border: none; border-radius:4px; cursor:pointer }
+        .btn-primary{ background:#4CAF50;color:#fff }
+        .btn-danger{ background:#f44336;color:#fff }
+        .btn-edit{ background:#2196F3;color:#fff }
+    </style>
+</head>
+<body>
+    <div id="nav">
+    <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
+    <div id="navcontent">
+        <button class="left" onclick="inputservice()">Service</button>
+        <button class="right" onclick="inputproducts()">Products</button>
+        <button class="right" onclick="inputlogout()">Log Out</button>
+    </div>
+    </div>
+
+    <div id="manage-container">
+        <div class="two-column">
+            <div class="manage-section">
+                <h2 id="formTitle">Add New Product</h2>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>Product Name *</label>
+                        <input id="productName" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($) *</label>
+                        <input id="productPrice" type="number" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity *</label>
+                        <input id="productQuantity" type="number" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="productDescription"></textarea>
+                    </div>
+                    <div style="display:flex;gap:8px">
+                        <button id="submitBtn" class="btn btn-primary">Add Product</button>
+                        <button type="button" class="btn" onclick="resetForm()">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="manage-section">
+                <h2>Products List</h2>
+                <div id="products-list">
+                    <div class="empty-state">No products yet. Add one to get started.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="manage.js"></script>
+</body>
+</html>
