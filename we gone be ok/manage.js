@@ -24,6 +24,7 @@ function saveProduct(){
     const name = document.getElementById('productName').value.trim();
     const price = parseFloat(document.getElementById('productPrice').value);
     const quantity = parseInt(document.getElementById('productQuantity').value, 10);
+    const imageUrl = document.getElementById('productImage').value.trim();
     const description = document.getElementById('productDescription').value.trim();
 
     if (!name || isNaN(price) || isNaN(quantity) || price < 0 || quantity < 0) {
@@ -34,13 +35,13 @@ function saveProduct(){
     if (editingId !== null) {
         const idx = products.findIndex(p => p.id === editingId);
         if (idx !== -1) {
-            products[idx] = { ...products[idx], name, price, quantity, description };
+            products[idx] = { ...products[idx], name, price, quantity, image: imageUrl, description };
         }
         editingId = null;
         document.getElementById('formTitle').textContent = 'Add New Product';
         document.getElementById('submitBtn').textContent = 'Add Product';
     } else {
-        const newProduct = { id: Date.now(), name, price, quantity, description };
+        const newProduct = { id: Date.now(), name, price, quantity, image: imageUrl, description };
         products.push(newProduct);
     }
 
@@ -62,6 +63,7 @@ function editProduct(id){
     document.getElementById('productName').value = p.name;
     document.getElementById('productPrice').value = p.price;
     document.getElementById('productQuantity').value = p.quantity;
+    document.getElementById('productImage').value = p.image || '';
     document.getElementById('productDescription').value = p.description;
     editingId = id;
     document.getElementById('formTitle').textContent = 'Edit Product';
@@ -87,6 +89,7 @@ function renderProductsList(){
         const desc = p.description ? `<div class="product-description">${escapeHtml(p.description)}</div>` : '';
         return `
         <div class="product-card">
+            <img src="${escapeHtml(p.image || 'https://via.placeholder.com/150')}" alt="${escapeHtml(p.name)}" class="product-image">
             <h3>${escapeHtml(p.name)}</h3>
             <div class="product-price">$${Number(p.price).toFixed(2)}</div>
             <div class="product-quantity">Stock: ${p.quantity}</div>
