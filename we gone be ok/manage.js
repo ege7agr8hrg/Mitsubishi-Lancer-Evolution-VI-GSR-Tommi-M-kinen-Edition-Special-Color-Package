@@ -9,6 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         saveProduct();
     });
+
+    // search box behaviour
+    const searchEl = document.getElementById('searchInput');
+    if (searchEl) {
+        searchEl.addEventListener('input', function(){
+            const term = this.value.trim().toLowerCase();
+            if (!term) {
+                renderProductsList();
+            } else {
+                const filtered = products.filter(p =>
+                    p.name.toLowerCase().includes(term) ||
+                    (p.description && p.description.toLowerCase().includes(term))
+                );
+                renderProductsList(filtered);
+            }
+        });
+    }
 });
 
 function loadProducts(){
@@ -78,14 +95,18 @@ function deleteProduct(id){
     renderProductsList();
 }
 
-function renderProductsList(){
+function renderProductsList(list){
+    const items = list || products;
     const el = document.getElementById('products-list');
-    if (!products || products.length === 0){
-        el.innerHTML = '<div class="empty-state">No products yet. Add one to get started.</div>';
+    if (!items || items.length === 0){
+        const msg = (list && list.length === 0)
+            ? 'No products match your search.'
+            : 'No products yet. Add one to get started.';
+        el.innerHTML = `<div class="empty-state">${msg}</div>`;
         return;
     }
 
-    el.innerHTML = products.map(p => {
+    el.innerHTML = items.map(p => {
         const desc = p.description ? `<div class="product-description">${escapeHtml(p.description)}</div>` : '';
         return `
         <div class="product-card">

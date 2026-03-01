@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Products</title>
     <link rel="stylesheet" href="main.css">
-    
 </head>
 <body>
     <div id="nav">
-    <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
-    <div id="navcontent">
-        <button class="left" onclick="inputservice()">Service</button>
-        <button class="left" onclick="inputemployee()">Employee</button>
-        <button class="right" onclick="inputproducts()">Products</button>
-        <button class="right" onclick="inputlogout()">Log Out</button>
-    </div>
-    <div id="search">
-        <input type="text" placeholder="Search...">
-    </div>
+        <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
+        <div id="navcontent">
+            <button class="left" onclick="inputlogout()">Account</button>
+            <button class="left" onclick="inputservice()">Service</button>
+            <button class="left" onclick="inputemployee()">Employee</button>
+            <button class="right" onclick="inputproducts()">Products</button>
+        </div>
     </div>
 
     <div id="manage-container">
@@ -27,48 +23,57 @@
                 <h2 id="formTitle">Add New Product</h2>
                 <form id="productForm">
                     <div class="form-group">
-                        <label>Product Name *</label>
-                        <br>
+                        <label>Product Name *</label><br>
                         <input id="productName" type="text" required>
-                    </div>
-                    <br>
+                    </div><br>
                     <div class="form-group">
-                        <label>Price (VND) *</label>
-                        <br>
-                        <input id="productPrice" type="number" step="1000" min="0" required>
-                    </div>
-                    <br>
+                        <label>Price ($) *</label><br>
+                        <input id="productPrice" type="number" step="1" min="0" required>
+                    </div><br>
                     <div class="form-group">
-                        <label>Image URL</label>
-                        <br>
+                        <label>Category *</label><br>
+                        <select id="productCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="RAM">RAM</option>
+                            <option value="SSD">SSD</option>
+                            <option value="HDD">HDD</option>
+                            <option value="Case">Case</option>
+                            <option value="Cooler">Cooler</option>
+                            <option value="PSU">PSU</option>
+                            <option value="Motherboard">Motherboard</option>
+                            <option value="GPU">GPU</option>
+                            <option value="CPU">CPU</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label><br>
                         <input id="productImage" type="text" required>
-                    </div>
-                    <br>
+                    </div><br>
                     <div class="form-group">
-                        <label>Quantity *</label>
-                        <br>
+                        <label>Quantity *</label><br>
                         <input id="productQuantity" type="number" min="0" required>
-                    </div>
-                    <br>
+                    </div><br>
                     <div class="form-group">
-                        <label>Description</label>
-                        <br>
+                        <label>Description</label><br>
                         <textarea id="productDescription"></textarea>
-                    </div>
-                    <br>
+                    </div><br>
                     <div style="display:flex;gap:8px">
                         <button id="submitBtn" class="btn btn-primary">Add Product</button>
                         <button type="button" class="btn" onclick="resetForm()">Clear</button>
                     </div>
                 </form>
             </div>
+        </div> <!-- end two-column -->
+    </div> <!-- end manage-container -->
 
-            <div id="manage-section">
-                <h2>Products List</h2>
-                <div id="products-list">
-                    <div class="empty-state">No products yet. Add one to get started.</div>
-                </div>
-            </div>
+    <!-- products list sits outside the container so it always appears below it -->
+    <div id="manage-section">
+        <h2>Products List</h2>
+        <div id="search">
+            <input id="searchInput" type="text" placeholder="Search...">
+        </div>
+        <div id="products-list">
+            <div class="empty-state">No products yet. Add one to get started.</div>
         </div>
     </div>
 
