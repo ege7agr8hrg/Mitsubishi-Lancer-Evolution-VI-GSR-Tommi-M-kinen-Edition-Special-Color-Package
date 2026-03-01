@@ -100,8 +100,8 @@ function renderProductsList(list){
     const el = document.getElementById('products-list');
     if (!items || items.length === 0){
         const msg = (list && list.length === 0)
-            ? 'No products match your search.'
-            : 'No products yet. Add one to get started.';
+            ? 'Không có sản phẩm nào phù hợp với từ khóa bạn tìm kiếm.'
+            : 'Chưa có sản phẩm nào. Thêm một sản phẩm để bắt đầu.';
         el.innerHTML = `<div class="empty-state">${msg}</div>`;
         return;
     }
@@ -116,8 +116,8 @@ function renderProductsList(list){
             <div class="product-quantity">Stock: ${p.quantity}</div>
             ${desc}
             <div class="product-actions">
-                <button class="btn btn-edit" onclick="editProduct(${p.id})">Edit</button>
-                <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+                <button class="btn btn-edit" onclick="editProduct(${p.id})">Sữa</button>
+                <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Xóa</button>
             </div>
         </div>
         `;
