@@ -13,7 +13,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  background: #e3f1f4;
+  background: #d9d9d9;
 }
 #logo {
   position: fixed;
@@ -123,13 +123,13 @@ body {
   width: 1200px;
   padding: 8px;
   border: 1px solid #cccccc;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 #manage-container textarea {
   width: 1200px;
   padding: 8px;
   border: 1px solid #cccccc;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 #search input {
   border-radius: 50px !important;
@@ -137,7 +137,7 @@ body {
 .manage-section {
   background: #fff;
   padding: 16px;
-  border-radius: 25px;
+  border-radius: 0px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   width: 1400px;
   left: 10px;
@@ -162,18 +162,18 @@ body {
   width: 310px;
   padding: 8px;
   border: 1px solid #fff;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 .form-group select {
   width: 330px;
   padding: 8px;
   border: 1px solid #cccccc;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 .product-card {
   border: 1px solid #eee;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 0px;
   background: #fff;
 }
 .product-card .product-image {
@@ -191,18 +191,22 @@ body {
 .btn {
   padding: 8px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 15px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.btn:hover {
+  border-radius: 0px;
+  filter: hue-rotate(360deg);
 }
 .btn-primary {
-  background: #4caf50;
+  background: #3c6e71;
   color: #fff;
   border-radius: 15px;
   transition: all 0.5s;
 }
 .btn-primary:hover {
-  background: #45a049;
-  border-radius: 5px;
+  border-radius: 0px;
   filter: hue-rotate(360deg);
 }
 .btn-danger {
@@ -218,12 +222,12 @@ body {
 #manage-section {
   z-index: 1;
   position: static;
-  margin-top: 700px;
+  margin-top: 1050px;
   margin-left: 10px;
   padding: 16px;
   box-shadow: #a1a1a186;
   width: 1400px;
   max-width: 1400px;
-  border-radius: 25px;
+  border-radius: 0px;
   background: #fff;
 }

@@ -45,7 +45,7 @@ function saveProduct(){
     const description = document.getElementById('productDescription').value.trim();
 
     if (!name || isNaN(price) || isNaN(quantity) || price < 0 || quantity < 0) {
-        alert('Please fill required fields correctly');
+        alert('Vui lòng nhập tên sản phẩm, giá hợp lệ và số lượng hợp lệ.');
         return;
     }
 
@@ -55,8 +55,8 @@ function saveProduct(){
             products[idx] = { ...products[idx], name, price, quantity, image: imageUrl, description };
         }
         editingId = null;
-        document.getElementById('formTitle').textContent = 'Add New Product';
-        document.getElementById('submitBtn').textContent = 'Add Product';
+        document.getElementById('formTitle').textContent = 'Thêm sản phẩm mối';
+        document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
     } else {
         const newProduct = { id: Date.now(), name, price, quantity, image: imageUrl, description };
         products.push(newProduct);
@@ -70,8 +70,8 @@ function saveProduct(){
 function resetForm(){
     document.getElementById('productForm').reset();
     editingId = null;
-    document.getElementById('formTitle').textContent = 'Add New Product';
-    document.getElementById('submitBtn').textContent = 'Add Product';
+    document.getElementById('formTitle').textContent = 'Thêm sản phẩm mới';
+    document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
 }
 
 function editProduct(id){
@@ -79,17 +79,18 @@ function editProduct(id){
     if (!p) return;
     document.getElementById('productName').value = p.name;
     document.getElementById('productPrice').value = p.price;
+    document.getElementById('productCategory').value = p.category || '';
     document.getElementById('productQuantity').value = p.quantity;
     document.getElementById('productImage').value = p.image || '';
     document.getElementById('productDescription').value = p.description;
     editingId = id;
-    document.getElementById('formTitle').textContent = 'Edit Product';
-    document.getElementById('submitBtn').textContent = 'Update Product';
+    document.getElementById('formTitle').textContent = 'Sửa thông tin';
+    document.getElementById('submitBtn').textContent = 'Cập nhật thông tin';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function deleteProduct(id){
-    if (!confirm('Delete this product?')) return;
+    if (!confirm('Xóa sản phẩm này?')) return;
     products = products.filter(p => p.id !== id);
     saveProducts();
     renderProductsList();
@@ -113,10 +114,11 @@ function renderProductsList(list){
             <img src="${escapeHtml(p.image || 'https://via.placeholder.com/150')}" alt="${escapeHtml(p.name)}" class="product-image">
             <h3>${escapeHtml(p.name)}</h3>
             <div class="product-price">$${Number(p.price).toFixed(2)}</div>
+            <div class="product-category">${escapeHtml(p.category || 'Chưa phân loại')}</div>
             <div class="product-quantity">Stock: ${p.quantity}</div>
             ${desc}
             <div class="product-actions">
-                <button class="btn btn-edit" onclick="editProduct(${p.id})">Sữa</button>
+                <button class="btn btn-edit" onclick="editProduct(${p.id})">Sửa</button>
                 <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Xóa</button>
             </div>
         </div>
