@@ -1,9 +1,13 @@
+// Product management (CRUD) using Firebase Firestore
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+import { db } from './config.js';
+
 // Product management (CRUD) using localStorage
 let products = [];
 let editingId = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadProducts();
     renderProductsList();
     document.getElementById('productForm').addEventListener('submit', function(e){
         e.preventDefault();
@@ -13,34 +17,51 @@ document.addEventListener('DOMContentLoaded', () => {
     // search box behaviour
     const searchEl = document.getElementById('searchInput');
     if (searchEl) {
-        searchEl.addEventListener('input', function(){
-            const term = this.value.trim().toLowerCase();
-            if (!term) {
-                renderProductsList();
-            } else {
-                const filtered = products.filter(p =>
-                    p.name.toLowerCase().includes(term) ||
-                    (p.description && p.description.toLowerCase().includes(term))
-                );
-                renderProductsList(filtered);
-            }
-        });
+        searchEl.addEventListener('input', applyFilters);
+    }
+
+    // category filter
+    const categoryFilter = document.getElementById('filterCategory');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', applyFilters);
     }
 });
 
-function loadProducts(){
-    const raw = localStorage.getItem('products');
-    products = raw ? JSON.parse(raw) : [];
+function applyFilters() {
+    const searchEl = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('filterCategory');
+    const term = searchEl ? searchEl.value.trim().toLowerCase() : '';
+    const category = categoryFilter ? categoryFilter.value : '';
+
+    let filtered = products;
+
+    if (term) {
+        filtered = filtered.filter(p =>
+            p.name.toLowerCase().includes(term) ||
+            (p.description && p.description.toLowerCase().includes(term))
+        );
+    }
+
+    if (category) {
+        filtered = filtered.filter(p => p.category === category);
+    }
+
+    renderProductsList(filtered);
 }
 
-function saveProducts(){
-    localStorage.setItem('products', JSON.stringify(products));
+async function loadProducts(){
+    const querySnapshot = await getDocs(collection(db, 'products'));
+    products = [];
+    querySnapshot.forEach((doc) => {
+        products.push({ id: doc.id, ...doc.data() });
+    });
 }
 
-function saveProduct(){
+async function saveProduct(){
     const name = document.getElementById('productName').value.trim();
     const price = parseFloat(document.getElementById('productPrice').value);
     const quantity = parseInt(document.getElementById('productQuantity').value, 10);
+    const category = document.getElementById('productCategory').value;
     const imageUrl = document.getElementById('productImage').value.trim();
     const description = document.getElementById('productDescription').value.trim();
 
@@ -50,20 +71,17 @@ function saveProduct(){
     }
 
     if (editingId !== null) {
-        const idx = products.findIndex(p => p.id === editingId);
-        if (idx !== -1) {
-            products[idx] = { ...products[idx], name, price, quantity, image: imageUrl, description };
-        }
+        await updateDoc(doc(db, 'products', editingId), { name, price, quantity, category, image: imageUrl, description });
         editingId = null;
         document.getElementById('formTitle').textContent = 'Thêm sản phẩm mối';
         document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
     } else {
-        const newProduct = { id: Date.now(), name, price, quantity, image: imageUrl, description };
-        products.push(newProduct);
+        const docRef = await addDoc(collection(db, 'products'), { name, price, quantity, category, image: imageUrl, description });
+        products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description });
     }
 
-    saveProducts();
-    renderProductsList();
+    await loadProducts();
+    applyFilters();
     resetForm();
 }
 
@@ -89,11 +107,11 @@ function editProduct(id){
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function deleteProduct(id){
+async function deleteProduct(id){
     if (!confirm('Xóa sản phẩm này?')) return;
-    products = products.filter(p => p.id !== id);
-    saveProducts();
-    renderProductsList();
+    await deleteDoc(doc(db, 'products', id));
+    await loadProducts();
+    applyFilters();
 }
 
 function renderProductsList(list){

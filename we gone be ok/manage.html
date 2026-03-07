@@ -11,12 +11,11 @@
         <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
         <div id="navcontent">
             <button class="left" onclick="inputlogout()">Tài khoản</button>
-            <button class="left" onclick="inputservice()">Dịch vụ</button>
-            <button class="left" onclick="inputemployee()">Nhân viên</button>
-            <button class="right" onclick="inputproducts()">Sản phẩm</button>
+            <button class="left" onclick="inputservice()">Điều chỉnh</button>
+            <button class="right" onclick="inputshowcase()">Trình bày</button>
         </div>
     </div>
-
+<h1 style="margin-top: 150px; margin-left: 20px; font-size: 90px;">Điều chỉnh</h1>
     <div id="manage-container">
         <div class="two-column">
             <div class="manage-section">
@@ -67,8 +66,21 @@
     </div> 
 
     <div id="manage-section">
-        <h2>Danh sách sản phẩm</h2>
-        <div id="Filter"></div>
+        <h2 style="font-weight: 800; font-size: 90px;">Danh sách</h2>
+        <div id="Filter">
+            <select id="filterCategory">
+                <option value="">Tất cả</option>
+                <option value="RAM">RAM</option>
+                <option value="SSD">SSD</option>
+                <option value="HDD">HDD</option>
+                <option value="Case">Vỏ</option>
+                <option value="Cooler">Làm mát</option>
+                <option value="PSU">PSU</option>
+                <option value="Motherboard">Bo mạch chủ</option>
+                <option value="GPU">GPU</option>
+                <option value="CPU">CPU</option>
+            </select>
+        </div>
         <div id="search">
             <input id="searchInput" type="text" placeholder="Search...">
         </div>
@@ -77,6 +89,6 @@
         </div>
     </div>
 
-    <script src="manage.js"></script>
+    <script type="module" src="manage.js"></script>
 </body>
 </html>
