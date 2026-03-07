@@ -1,7 +1,3 @@
-// Product management (CRUD) using Firebase Firestore
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-import { db } from './config.js';
-
 // Product management (CRUD) using localStorage
 let products = [];
 let editingId = null;

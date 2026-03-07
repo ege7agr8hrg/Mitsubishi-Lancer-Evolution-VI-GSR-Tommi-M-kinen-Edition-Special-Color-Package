@@ -1,0 +1,74 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#cfd8dc;
+}
+
+/* LOGIN CARD */
+
+.login-container{
+  width:420px;
+  padding:40px;
+  background:white;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+.login-container h2{
+  margin-bottom:25px;
+  font-size:24px;
+}
+
+/* INPUT */
+
+.input-group{
+  margin-bottom:15px;
+}
+
+.input-group input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+/* BUTTON */
+
+.login-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:20px;
+  background:#4CAF50;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.login-btn:hover{
+  background:#43a047;
+}
+
+/* REGISTER LINK */
+
+.register-link{
+  margin-top:15px;
+  font-size:14px;
+}
+
+.register-link a{
+  color:#2196f3;
+  text-decoration:none;
+}
