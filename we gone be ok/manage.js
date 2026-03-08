@@ -14,13 +14,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         saveProduct();
     });
 
-    // search box behaviour
+    // search box 
     const searchEl = document.getElementById('searchInput');
     if (searchEl) {
         searchEl.addEventListener('input', applyFilters);
     }
 
-    // category filter
     const categoryFilter = document.getElementById('filterCategory');
     if (categoryFilter) {
         categoryFilter.addEventListener('change', applyFilters);
