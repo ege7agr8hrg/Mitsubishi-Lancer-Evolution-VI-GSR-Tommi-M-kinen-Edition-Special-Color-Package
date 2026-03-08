@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Products</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="manage.css">
 </head>
 <body>
     <div id="nav">
         <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
         <div id="navcontent">
-            <button class="left" onclick="inputlogout()">Tài khoản</button>
-            <button class="left" onclick="inputservice()">Điều chỉnh</button>
+            <button class="left" onclick="inputaccount()">Tài khoản</button>
+            <button class="left" onclick="inputmanage()">Quản lý</button>
             <button class="right" onclick="inputshowcase()">Trình bày</button>
         </div>
     </div>
-<h1 style="margin-top: 150px; margin-left: 20px; font-size: 90px;">Điều chỉnh</h1>
+<h1 style="margin-top: 150px; margin-left: 20px; font-size: 90px;">Quản lý</h1>
     <div id="manage-container">
         <div class="two-column">
             <div class="manage-section">
@@ -89,7 +89,8 @@
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
+    <script src="config.js"></script>
     <script src="manage.js"></script>
 </body>
 </html>

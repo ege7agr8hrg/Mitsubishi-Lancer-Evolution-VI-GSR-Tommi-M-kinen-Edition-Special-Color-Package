@@ -144,6 +144,7 @@ textarea {
 #search {
   margin-bottom: 10px;
   width: 100%;
+  position: sticky;
   /* keep the search box below the fixed nav bar (50px height) */
   top: 10px;
   z-index: 1100; /* above #nav's z-index so it remains clickable when stuck */
@@ -295,12 +296,24 @@ textarea {
 #manage-section {
   z-index: 1;
   position: static;
-  margin-top: 700px;
+  margin-top: 1000px;
   margin-left: 10px;
-  padding: 16px;
+  margin-bottom: 200px;
+  padding: 16px 16px 200px 16px;
   box-shadow: #a1a1a186;
   width: 1400px;
   max-width: 1400px;
   border-radius: 25px;
   background: #fff;
+}
+#Filter {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+#filterCategory {
+  width: 20%;
+  padding: 8px;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
 }

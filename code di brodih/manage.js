@@ -1,4 +1,4 @@
-// Product management (CRUD) using localStorage
+// Product management with Firebase sync and localStorage backup
 let products = [];
 let editingId = null;
 
@@ -45,11 +45,20 @@ function applyFilters() {
 }
 
 async function loadProducts(){
-    const querySnapshot = await getDocs(collection(db, 'products'));
-    products = [];
-    querySnapshot.forEach((doc) => {
-        products.push({ id: doc.id, ...doc.data() });
-    });
+    try {
+        const querySnapshot = await window.db.collection('products').get();
+        products = [];
+        querySnapshot.forEach((doc) => {
+            products.push({ id: doc.id, ...doc.data() });
+        });
+        // Save to localStorage as backup
+        localStorage.setItem('products', JSON.stringify(products));
+    } catch (error) {
+        console.error('Error loading from Firebase:', error);
+        // Fallback to localStorage
+        const stored = localStorage.getItem('products');
+        products = stored ? JSON.parse(stored) : [];
+    }
 }
 
 async function saveProduct(){
@@ -65,19 +74,44 @@ async function saveProduct(){
         return;
     }
 
-    if (editingId !== null) {
-        await updateDoc(doc(db, 'products', editingId), { name, price, quantity, category, image: imageUrl, description });
-        editingId = null;
-        document.getElementById('formTitle').textContent = 'Thêm sản phẩm mối';
-        document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
-    } else {
-        const docRef = await addDoc(collection(db, 'products'), { name, price, quantity, category, image: imageUrl, description });
-        products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description });
-    }
+    try {
+        if (editingId !== null) {
+            await window.db.collection('products').doc(editingId).update({ name, price, quantity, category, image: imageUrl, description });
+            // Update local
+            const index = products.findIndex(p => p.id === editingId);
+            if (index !== -1) {
+                products[index] = { id: editingId, name, price, quantity, category, image: imageUrl, description };
+            }
+            editingId = null;
+            document.getElementById('formTitle').textContent = 'Thêm sản phẩm mới';
+            document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
+        } else {
+            const docRef = await window.db.collection('products').add({ name, price, quantity, category, image: imageUrl, description });
+            products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description });
+        }
 
-    await loadProducts();
-    applyFilters();
-    resetForm();
+        localStorage.setItem('products', JSON.stringify(products));
+        applyFilters();
+        resetForm();
+        alert('Sản phẩm đã được lưu thành công!');
+    } catch (error) {
+        console.error('Error saving to Firebase:', error);
+        alert('Lỗi khi lưu sản phẩm: ' + error.message);
+        // Still save locally
+        if (editingId !== null) {
+            const index = products.findIndex(p => p.id === editingId);
+            if (index !== -1) {
+                products[index] = { id: editingId, name, price, quantity, category, image: imageUrl, description };
+            }
+            editingId = null;
+        } else {
+            const newId = Date.now().toString();
+            products.push({ id: newId, name, price, quantity, category, image: imageUrl, description });
+        }
+        localStorage.setItem('products', JSON.stringify(products));
+        applyFilters();
+        resetForm();
+    }
 }
 
 function resetForm(){
@@ -104,9 +138,20 @@ function editProduct(id){
 
 async function deleteProduct(id){
     if (!confirm('Xóa sản phẩm này?')) return;
-    await deleteDoc(doc(db, 'products', id));
-    await loadProducts();
-    applyFilters();
+    try {
+        await window.db.collection('products').doc(id).delete();
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem('products', JSON.stringify(products));
+        applyFilters();
+        alert('Sản phẩm đã được xóa thành công!');
+    } catch (error) {
+        console.error('Error deleting from Firebase:', error);
+        alert('Lỗi khi xóa sản phẩm: ' + error.message);
+        // Still delete locally
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem('products', JSON.stringify(products));
+        applyFilters();
+    }
 }
 
 function renderProductsList(list){
@@ -131,8 +176,8 @@ function renderProductsList(list){
             <div class="product-quantity">Stock: ${p.quantity}</div>
             ${desc}
             <div class="product-actions">
-                <button class="btn btn-edit" onclick="editProduct(${p.id})">Sửa</button>
-                <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Xóa</button>
+                <button class="btn btn-edit" onclick="editProduct('${p.id}')">Sửa</button>
+                <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Xóa</button>
             </div>
         </div>
         `;
