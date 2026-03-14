@@ -1,16 +1,25 @@
-// Product management with Firebase sync and localStorage backup
+//
 let products = [];
 let editingId = null;
+let currentUid = null;
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadProducts();
-    renderProductsList();
+document.addEventListener('DOMContentLoaded', () => {
+    firebase.auth().onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = 'log/reg/login.html';
+            return;
+        }
+
+        currentUid = user.uid;
+        await loadProducts(currentUid);
+        renderProductsList();
+    });
+
     document.getElementById('productForm').addEventListener('submit', function(e){
         e.preventDefault();
         saveProduct();
     });
 
-    // search box 
     const searchEl = document.getElementById('searchInput');
     if (searchEl) {
         searchEl.addEventListener('input', applyFilters);
@@ -44,19 +53,24 @@ function applyFilters() {
     renderProductsList(filtered);
 }
 
-async function loadProducts(){
+async function loadProducts(uid){
+    if (!uid) {
+        products = [];
+        return;
+    }
+
     try {
-        const querySnapshot = await window.db.collection('products').get();
+        const querySnapshot = await window.db.collection('products').where('owner', '==', uid).get();
         products = [];
         querySnapshot.forEach((doc) => {
             products.push({ id: doc.id, ...doc.data() });
         });
-        // Save to localStorage as backup
-        localStorage.setItem('products', JSON.stringify(products));
+        // Save to localStorage as backup per user
+        localStorage.setItem('products_' + uid, JSON.stringify(products));
     } catch (error) {
         console.error('Error loading from Firebase:', error);
         // Fallback to localStorage
-        const stored = localStorage.getItem('products');
+        const stored = localStorage.getItem('products_' + uid) || localStorage.getItem('products');
         products = stored ? JSON.parse(stored) : [];
     }
 }
@@ -86,8 +100,9 @@ async function saveProduct(){
             document.getElementById('formTitle').textContent = 'Thêm sản phẩm mới';
             document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
         } else {
-            const docRef = await window.db.collection('products').add({ name, price, quantity, category, image: imageUrl, description });
-            products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description });
+            const ownerId = currentUid || (firebase.auth().currentUser && firebase.auth().currentUser.uid);
+            const docRef = await window.db.collection('products').add({ name, price, quantity, category, image: imageUrl, description, owner: ownerId });
+            products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description, owner: ownerId });
         }
 
         localStorage.setItem('products', JSON.stringify(products));
@@ -189,4 +204,10 @@ function escapeHtml(text){
     return String(text).replace(/[&<>"']/g, function(m){
         return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
     });
+}
+function inputshowcase(){
+    window.location.href = 'index.html';
+}
+function inputaccount(){
+    window.location.href = 'account.html';
 }

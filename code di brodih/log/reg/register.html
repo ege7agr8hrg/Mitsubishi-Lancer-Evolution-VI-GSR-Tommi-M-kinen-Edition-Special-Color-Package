@@ -7,14 +7,20 @@
 </head>
 
 <body>
-
+<div id="logo">
+  <img src="./help.gif" alt="Logo" height="70" width="70">
+</div>
 <form>
 
 <div class="register-container">
   <h2>Đăng ký</h2>
 
   <div class="input-group">
-    <input type="text" id="username" placeholder="Tên đăng nhập">
+    <input type="email" id="email" placeholder="Email">
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="username" placeholder="Tên đăng nhập (không bắt buộc)">
   </div>
 
   <div class="input-group">
@@ -35,6 +41,8 @@
 
 </form>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
+<script src="../../config.js"></script>
 <script src="auth.js"></script>
 <script src="register.js"></script>
 

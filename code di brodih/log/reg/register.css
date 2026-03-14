@@ -12,6 +12,12 @@ body{
   align-items:center;
   background:#cfd8dc;
 }
+#logo {
+  position: fixed;
+ bottom: 91%;
+ align-items: center;;
+
+}
 
 /* REGISTER CARD */
 

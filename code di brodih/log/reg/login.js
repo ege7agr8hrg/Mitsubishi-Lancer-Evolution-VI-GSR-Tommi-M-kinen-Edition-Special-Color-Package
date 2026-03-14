@@ -1,10 +1,8 @@
-document.querySelector("form").addEventListener("submit", function(e){
-
+document.querySelector('form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const username = document.querySelector("#username").value;
-    const password = document.querySelector("#password").value;
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
 
-    login(username,password);
-
+    login(email, password);
 });

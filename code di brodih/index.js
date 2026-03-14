@@ -46,3 +46,7 @@ prev.onclick=prevSlide
 updateSlider()
 
 setInterval(nextSlide,5000)
+
+function inputaccount(){
+    window.location.href = './account.html';
+}
