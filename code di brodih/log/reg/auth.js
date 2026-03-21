@@ -5,6 +5,9 @@ const adminAccount = {
     role: "admin"
 };
 
+const loginstatus = false;
+
+
 function routeByEmail(email){
     const lowerEmail = (email || '').toLowerCase();
 

@@ -50,3 +50,6 @@ setInterval(nextSlide,5000)
 function inputaccount(){
     window.location.href = './account.html';
 }
+function inputmanage(){
+    window.location.href = './manage.html';
+}

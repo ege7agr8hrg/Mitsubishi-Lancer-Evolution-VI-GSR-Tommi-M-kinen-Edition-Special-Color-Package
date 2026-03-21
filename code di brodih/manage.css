@@ -17,15 +17,15 @@ body {
   background: #e3f1f4;
 }
 #logo {
-  position: fixed;
-  left: 360px;
+  position: relative;
+ justify-content: center;
   z-index: 10000000;
 }
 
 #nav img {
   position: fixed;
   top: -5px;
-  left: 680px;
+  left: 50%;
 }
 
 #nav button {
@@ -136,6 +136,7 @@ body {
 textarea {
   resize: vertical;
   min-height: 80px;
+  width: 30%;
 }
 
 
@@ -144,6 +145,7 @@ textarea {
 #search {
   margin-bottom: 10px;
   width: 100%;
+  left: 60px;
   position: sticky;
   /* keep the search box below the fixed nav bar (50px height) */
   top: 10px;
@@ -316,4 +318,25 @@ textarea {
   padding: 8px;
   border: 1px solid #cccccc;
   border-radius: 10px;
+}
+
+#btnlogout {
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  width: 160px;
+  height: 100px;
+  border: none;
+  z-index: 1200;
+  background: #f48236;
+  color: #000000;
+  border-radius: 55px;
+  font-weight: 900;
+  font-size: 30px;
+  transition: all 0.6s ease-in-out;
+}
+#btnlogout:hover {
+  border-radius: 0px;
+  background-color: #f43d18;
+  filter: hue-rotate(360deg);
 }

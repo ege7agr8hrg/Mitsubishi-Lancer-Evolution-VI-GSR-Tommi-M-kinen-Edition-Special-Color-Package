@@ -6,7 +6,7 @@ let currentUid = null;
 document.addEventListener('DOMContentLoaded', () => {
     firebase.auth().onAuthStateChanged(async (user) => {
         if (!user) {
-            window.location.href = 'log/reg/login.html';
+            window.location.href = '../log/reg/login.html';
             return;
         }
 
