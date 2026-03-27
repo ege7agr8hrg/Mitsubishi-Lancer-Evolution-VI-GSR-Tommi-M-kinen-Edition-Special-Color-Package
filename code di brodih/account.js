@@ -1,44 +1,62 @@
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
-        window.location.href = '../code di brodih/log/reg/login.html';
-} else {
-    console.log('Chào', user.email, '!');
+        window.location.href = 'log/reg/login.html';
+        return;
+    }
+    
+    try {
+        // Lấy thông tin user từ Firestore
+        const doc = await db.collection('users').doc(user.uid).get();
+        const data = doc.data();
+        const role = data?.role || 'user';
+        
+        // Hiển thị thông tin
+        document.getElementById('userEmail').innerText = user.email;
+        document.getElementById('userName').innerText = data?.username || 'Chưa đặt';
+        document.getElementById('userRole').innerText = role === 'admin' ? 'Quản trị viên' : 'Người dùng';
+        document.getElementById('userUid').innerText = user.uid;
+        
+        // Kiểm tra role để ẩn/hiện nút Quản lý
+        const manageBtn = document.getElementById('manageBtn');
+        if (manageBtn) {
+            if (role === 'admin') {
+                manageBtn.style.display = 'inline-block';
+                manageBtn.onclick = () => window.location.href = 'manage.html';
+            } else {
+                manageBtn.style.display = 'none';
+            }
+        }
+        
+    } catch (error) {
+        console.error('Lỗi lấy user info:', error);
+        document.getElementById('userEmail').innerText = user.email;
+        document.getElementById('userName').innerText = 'Không thể tải';
+        document.getElementById('userRole').innerText = 'Người dùng';
+        document.getElementById('userUid').innerText = user.uid;
+        
+        // Mặc định ẩn nút quản lý nếu có lỗi
+        const manageBtn = document.getElementById('manageBtn');
+        if (manageBtn) manageBtn.style.display = 'none';
     }
 });
 
+// Xử lý nút quay lại
+document.getElementById('backBtn').addEventListener('click', function() {
+    window.location.href = 'index.html';
+});
 
-function inputmanage(){
-    window.location.href = './manage.html';
-}
-
-function inputshowcase(){
-    window.location.href = './index.html';
-}
-
-// Define the function first
-const logoutBtn = async () => {
+// Xử lý đăng xuất
+async function logout() {
     try {
-        await firebase.auth().signOut(); 
-        
-        // Clear local data
+        await firebase.auth().signOut();
         localStorage.removeItem('role');
         localStorage.removeItem('uid');
-
-        // Redirect to the correct login path
-        // Based on your account.js line 3, the path should likely be:
-        window.location.href = '../code di brodih/log/reg/login.html'; 
+        sessionStorage.removeItem('welcomePopup');
+        window.location.href = 'log/reg/login.html';
     } catch (error) {
-        console.error('Không thể đăng xuất', error);
-        alert('Lỗi khi đăng xuất!');
+        console.error('Lỗi đăng xuất:', error);
+        alert('Không thể đăng xuất. Vui lòng thử lại.');
     }
-};
+}
 
-// Ensure the DOM is loaded before grabbing the button
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('btnlogout');
-    if (btn) {
-        btn.addEventListener('click', logoutBtn);
-    }
-});
-// This matches the ID we added to the HTML
-document.getElementById('btnlogout').addEventListener('click', logoutBtn);
+document.getElementById('btnlogout').addEventListener('click', logout);

@@ -1,44 +1,29 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-
-<meta charset="UTF-8">
-<title>Đăng nhập</title>
-
-<link rel="stylesheet" href="login.css">
-
+  <meta charset="UTF-8">
+  <title>Đăng nhập</title>
+  <link rel="stylesheet" href="login.css">
+  <!-- Firebase + Config chỉ load 1 lần -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
+  <script src="../../config.js"></script>
+  <!-- auth.js và login.js sau khi đã có config -->
+  <script src="auth.js"></script>
 </head>
-
 <body>
-
-<div class="login-container">
-
-<h2>Đăng nhập</h2>
-
-<form>
-
-<div class="input-group">
-<input type="email" id="email" placeholder="Email">
-</div>
-
-<div class="input-group">
-<input type="password" id="password" placeholder="Mật khẩu">
-</div>
-
-<button class="login-btn">Đăng nhập</button>
-
-<p class="register-link">
-Chưa có tài khoản? <a href="register.html">Đăng ký</a>
-</p>
-
-</form>
-
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
-<script src="../../config.js"></script>
-<script src="auth.js"></script>
-<script src="login.js"></script>
-
+  <div class="login-container">
+    <h2>Đăng nhập</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Mật khẩu" required>
+      </div>
+      <button type="submit" class="login-btn">Đăng nhập</button>
+      <p class="register-link">Chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+    </form>
+  </div>
+  <script src="login.js"></script>
 </body>
 </html>

@@ -1,23 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./manage.css">
+    <title>Tài khoản - PC Store</title>
+    <link rel="stylesheet" href="account.css">
 </head>
 <body>
     <div id="nav">
-        <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
+        <img src="../images/logo.png" alt="logo" id="logo" width="70" height="70" onerror="this.style.display='none'">
         <div id="navcontent">
-            <button class="left" onclick="inputmanage()">Quản lý</button>
-            <button class="right" onclick="inputshowcase()">Trình bày</button>
+            <button id="manageBtn" class="nav-btn">Quản lý</button>
+            <button id="backBtn" class="nav-btn">Trình bày</button>
         </div>
     </div>
-    <button id="btnlogout">Log out</button>
+    
+    <div class="account-container">
+        <div class="avatar">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="avatar" width="80">
+        </div>
+        <h2>Thông tin tài khoản</h2>
+        <div id="userInfo" class="user-info">
+            <div class="info-row">
+                <span class="label">📧 Email:</span>
+                <span id="userEmail" class="value">Đang tải...</span>
+            </div>
+            <div class="info-row">
+                <span class="label">👤 Tên hiển thị:</span>
+                <span id="userName" class="value">Đang tải...</span>
+            </div>
+            <div class="info-row">
+                <span class="label">⭐ Vai trò:</span>
+                <span id="userRole" class="value">Đang tải...</span>
+            </div>
+            <div class="info-row">
+                <span class="label">🆔 UID:</span>
+                <span id="userUid" class="value uid">Đang tải...</span>
+            </div>
+        </div>
+        <button id="btnlogout" class="logout-btn">Đăng xuất</button>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
-    <script src="./config.js"></script>
-    <script src="./account.js"></script>
+    <script src="config.js"></script>
+    <script src="account.js"></script>
 </body>
 </html>

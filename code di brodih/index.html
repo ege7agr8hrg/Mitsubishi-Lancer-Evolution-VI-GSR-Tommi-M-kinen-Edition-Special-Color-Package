@@ -1,103 +1,138 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PC Store</title>
-
-<link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Store - Linh kiện máy tính</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
+  <script src="config.js"></script>
 </head>
-
 <body>
-
-<!-- NAVBAR -->
-
-<div class="nav-wrapper">
-
+  <!-- NAVBAR -->
+  <div class="nav-wrapper">
+    <div class="logo">
+      <img src="images/logo.png" alt="PC Store" height="40">
+    </div>
     <div id="navcontent">
-        <button onclick="inputaccount()">Tài khoản</button>
-        <button onclick="inputmanage()">Quản lý</button>
+      <button id="accountBtn">Tài khoản</button>
+      <button id="manageBtn">Quản lý</button>
     </div>
-
     <div class="search-container">
-        🔍
-        <input type="text" placeholder="Search product...">
+      🔍 <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
     </div>
+    <div id="cartIcon">
+      🛒 <span id="cartCount">0</span>
+    </div>
+  </div>
 
-</div>
-
-<!-- HERO -->
-
+<!-- HERO SLIDER -->
 <section class="hero">
-
-<div class="slider">
-
-<div class="slides">
-
-<div class="slide">
-<img src="images/hero1.jpg">
-</div>
-
-<div class="slide">
-<img src="images/hero2.jpg">
-</div>
-
-<div class="slide">
-<img src="images/hero3.jpg">
-</div>
-
-</div>
-
-<button class="prev">&#10094;</button>
-<button class="next">&#10095;</button>
-
-<div class="dots"></div>
-
-</div>
-
+  <div class="slider-container">
+    <div class="slider">
+      <div class="slides">
+        <div class="slide"><img src="images/hero1.jpg" alt="Gaming PC" onerror="this.src='https://via.placeholder.com/1920x500?text=PC+Store'"></div>
+        <div class="slide"><img src="images/hero2.jpg" alt="Linh kiện chính hãng" onerror="this.src='https://via.placeholder.com/1920x500?text=Chất+lượng+cao'"></div>
+        <div class="slide"><img src="images/hero3.jpg" alt="Khuyến mãi lớn" onerror="this.src='https://via.placeholder.com/1920x500?text=Khuyến+mãi+hot'"></div>
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+      <div class="dots"></div>
+    </div>
+  </div>
+  <!-- Banner quảng cáo thêm -->
+  <div class="hero-banners">
+    <div class="banner-item">💻 TƯ VẤN BUILD PC</div>
+    <div class="banner-item">🎯 TUYỂN NHÂN VIÊN</div>
+  </div>
 </section>
 
-<!-- PRODUCT SECTION -->
+  <!-- CATEGORY FILTER -->
+  <section class="category-filter">
+    <div class="filter-container">
+      <button class="filter-btn active" data-category="all">Tất cả</button>
+      <button class="filter-btn" data-category="CPU">CPU</button>
+      <button class="filter-btn" data-category="GPU">VGA</button>
+      <button class="filter-btn" data-category="RAM">RAM</button>
+      <button class="filter-btn" data-category="SSD">SSD</button>
+      <button class="filter-btn" data-category="HDD">HDD</button>
+      <button class="filter-btn" data-category="Motherboard">Mainboard</button>
+      <button class="filter-btn" data-category="PSU">Nguồn</button>
+      <button class="filter-btn" data-category="Case">Case</button>
+      <button class="filter-btn" data-category="Cooler">Tản nhiệt</button>
+    </div>
+  </section>
 
-<section class="products">
+  <!-- PRODUCT SECTION -->
+  <section class="products">
+    <h2>Sản phẩm nổi bật</h2>
+    <div id="product-grid" class="product-grid"></div>
+  </section>
 
-<h2>Sản phẩm</h2>
-
-<div class="product-grid">
-
-<div class="product-card">
-<img src="images/pici1.jpg">
-<h3>Gaming PC RTX</h3>
-<p class="price">32.000.000đ</p>
-<button class="buy">Mua ngay</button>
+  <!-- CART MODAL -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Giỏ hàng của bạn</h3>
+      <div id="cartItems"></div>
+      <p><strong>Tổng cộng: <span id="cartTotal">0</span>đ</strong></p>
+      <button id="checkoutBtn">Thanh toán</button>
+    </div>
+  </div>
+  
+  <!-- Popup chào mừng -->
+<div id="welcomePopup" class="popup-overlay" style="display: none;">
+  <div class="popup-content">
+    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW1nN2xyd21weWZvMml5OGZxdDR5MW01MWRobG5iNjY3c3d5dmh2MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WhoNyvVjuB88HjDK0l/giphy.gif" alt="Welcome">
+    <p>Chào mừng bạn đến với PC Store!</p>
+  </div>
 </div>
 
-<div class="product-card">
-<img src="images/pici1.jpg">
-<h3>Gaming PC Ryzen</h3>
-<p class="price">28.000.000đ</p>
-<button class="buy">Mua ngay</button>
-</div>
-
-<div class="product-card">
-<img src="images/pici1.jpg">
-<h3>Gaming PC Intel</h3>
-<p class="price">35.000.000đ</p>
-<button class="buy">Mua ngay</button>
-</div>
-
-<div class="product-card">
-<img src="images/pici1.jpg">
-<h3>Streaming PC</h3>
-<p class="price">40.000.000đ</p>
-<button class="buy">Mua ngay</button>
-</div>
-
-</div>
-
-</section>
-
-<script src="index.js"></script>
-
+  <script src="index.js"></script>
 </body>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>PC Store</h3>
+      <p>Chuyên cung cấp linh kiện máy tính chính hãng, chất lượng cao.</p>
+      <div class="social-links">
+        <a href="#"><i>📘</i></a>
+        <a href="#"><i>📷</i></a>
+        <a href="#"><i>🎥</i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h4>Liên kết nhanh</h4>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="#">Sản phẩm</a></li>
+        <li><a href="#">Khuyến mãi</a></li>
+        <li><a href="#">Tin tức</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Hỗ trợ</h4>
+      <ul>
+        <li><a href="#">Hướng dẫn mua hàng</a></li>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Câu hỏi thường gặp</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Liên hệ</h4>
+      <ul>
+        <li>📍 123 Đường ABC, Quận 1, TP.HCM</li>
+        <li>📞 1900 1234</li>
+        <li>✉️ support@pcstore.vn</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 PC Store. All rights reserved.</p>
+  </div>
+</footer>
+
 </html>
