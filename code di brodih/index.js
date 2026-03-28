@@ -266,6 +266,81 @@ firebase.auth().onAuthStateChanged(async (user) => {
   }
 });
 
+// ========== CUỘN MƯỢT KHI CLICK NAV LINK ==========
+document.querySelectorAll('[data-scroll]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('data-scroll');
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ========== API TIN TỨC CÔNG NGHỆ (VnExpress RSS) ==========
+async function fetchTechNews() {
+  const newsContainer = document.getElementById('newsList');
+  if (!newsContainer) return;
+  newsContainer.innerHTML = '<div class="loading">Đang tải tin tức...</div>';
+  
+  try {
+    // Dùng RSS2JSON proxy để lấy tin từ VnExpress Technology
+    const rssUrl = 'https://vnexpress.net/rss/technology.rss';
+    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    
+    const response = await fetch(proxyUrl);
+    const data = await response.json();
+    
+    if (data.status === 'ok' && data.items) {
+      const items = data.items.slice(0, 6); // Lấy 6 bài mới nhất
+      newsContainer.innerHTML = items.map(item => `
+        <a href="${item.link}" target="_blank" class="news-card">
+          <img src="${item.thumbnail || 'https://via.placeholder.com/280x160?text=No+Image'}" class="news-img" onerror="this.src='https://via.placeholder.com/280x160?text=News'">
+          <h4>${escapeHtml(item.title)}</h4>
+          <p>${escapeHtml(item.description.substring(0, 100))}...</p>
+          <span class="news-date">${new Date(item.pubDate).toLocaleDateString('vi-VN')}</span>
+        </a>
+      `).join('');
+    } else {
+      newsContainer.innerHTML = '<p>Không thể tải tin tức. Vui lòng thử lại sau.</p>';
+    }
+  } catch (error) {
+    console.error('Lỗi fetch news:', error);
+    newsContainer.innerHTML = '<p>Không thể kết nối đến nguồn tin. Vui lòng thử lại sau.</p>';
+  }
+}
+
+// ========== BẢNG XẾP HẠNG LINH KIỆN (Dữ liệu mẫu + gợi ý mua hàng) ==========
+// Thực tế có thể gọi API từ một dịch vụ như UserBenchmark, nhưng tạm dùng dữ liệu mẫu.
+const rankingData = [
+  { name: "Intel Core i5-13600K", category: "CPU", score: "94%", link: "#" },
+  { name: "AMD Ryzen 7 7800X3D", category: "CPU", score: "92%", link: "#" },
+  { name: "NVIDIA GeForce RTX 4070 Ti", category: "GPU", score: "96%", link: "#" },
+  { name: "AMD Radeon RX 7900 XTX", category: "GPU", score: "95%", link: "#" },
+  { name: "Kingston Fury Beast DDR5 32GB", category: "RAM", score: "89%", link: "#" },
+  { name: "Samsung 990 Pro 1TB", category: "SSD", score: "97%", link: "#" }
+];
+
+function renderRanking() {
+  const rankingContainer = document.getElementById('rankingList');
+  if (!rankingContainer) return;
+  rankingContainer.innerHTML = rankingData.map((item, idx) => `
+    <a href="${item.link}" class="ranking-item" target="_blank">
+      <div class="rank-number">${idx + 1}</div>
+      <div class="rank-info">
+        <div class="rank-name">${escapeHtml(item.name)}</div>
+        <div class="rank-category">${escapeHtml(item.category)}</div>
+      </div>
+      <div class="rank-score">${escapeHtml(item.score)}</div>
+    </a>
+  `).join('');
+}
+
+// Gọi các hàm mới khi trang load
+fetchTechNews();
+renderRanking();
+
 // Load products when page loads
 loadProducts();
 updateCartUI();

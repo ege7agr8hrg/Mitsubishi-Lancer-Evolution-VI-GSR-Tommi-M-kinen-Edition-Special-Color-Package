@@ -9,10 +9,17 @@
   <script src="config.js"></script>
 </head>
 <body>
-  <!-- NAVBAR -->
+  <!-- NAVBAR MỚI -->
   <div class="nav-wrapper">
     <div class="logo">
-      <img src="images/logo.png" alt="PC Store" height="40">
+      <img src="images/logo.png" alt="PC Store" height="40" onerror="this.style.display='none'">
+      <span class="logo-text">PC Store</span>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link" data-scroll="home">Trang chủ</a>
+      <a href="#" class="nav-link" data-scroll="products">Sản phẩm</a>
+      <a href="#" class="nav-link" data-scroll="news">Tin tức</a>
+      <a href="#" class="nav-link" data-scroll="support">Hỗ trợ</a>
     </div>
     <div id="navcontent">
       <button id="accountBtn">Tài khoản</button>
@@ -26,26 +33,25 @@
     </div>
   </div>
 
-<!-- HERO SLIDER -->
-<section class="hero">
-  <div class="slider-container">
-    <div class="slider">
-      <div class="slides">
-        <div class="slide"><img src="images/hero1.jpg" alt="Gaming PC" onerror="this.src='https://via.placeholder.com/1920x500?text=PC+Store'"></div>
-        <div class="slide"><img src="images/hero2.jpg" alt="Linh kiện chính hãng" onerror="this.src='https://via.placeholder.com/1920x500?text=Chất+lượng+cao'"></div>
-        <div class="slide"><img src="images/hero3.jpg" alt="Khuyến mãi lớn" onerror="this.src='https://via.placeholder.com/1920x500?text=Khuyến+mãi+hot'"></div>
+  <!-- HERO SLIDER (giữ nguyên) -->
+  <section class="hero" id="home">
+    <div class="slider-container">
+      <div class="slider">
+        <div class="slides">
+          <div class="slide"><img src="images/hero1.jpg" alt="Gaming PC" onerror="this.src='https://via.placeholder.com/1920x500?text=PC+Store'"></div>
+          <div class="slide"><img src="images/hero2.jpg" alt="Linh kiện chính hãng" onerror="this.src='https://via.placeholder.com/1920x500?text=Chất+lượng+cao'"></div>
+          <div class="slide"><img src="images/hero3.jpg" alt="Khuyến mãi lớn" onerror="this.src='https://via.placeholder.com/1920x500?text=Khuyến+mãi+hot'"></div>
+        </div>
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+        <div class="dots"></div>
       </div>
-      <button class="prev">&#10094;</button>
-      <button class="next">&#10095;</button>
-      <div class="dots"></div>
     </div>
-  </div>
-  <!-- Banner quảng cáo thêm -->
-  <div class="hero-banners">
-    <div class="banner-item">💻 TƯ VẤN BUILD PC</div>
-    <div class="banner-item">🎯 TUYỂN NHÂN VIÊN</div>
-  </div>
-</section>
+    <div class="hero-banners">
+      <div class="banner-item">💻 TƯ VẤN BUILD PC</div>
+      <div class="banner-item">🎯 TUYỂN NHÂN VIÊN</div>
+    </div>
+  </section>
 
   <!-- CATEGORY FILTER -->
   <section class="category-filter">
@@ -64,10 +70,28 @@
   </section>
 
   <!-- PRODUCT SECTION -->
-  <section class="products">
+  <section class="products" id="products">
     <h2>Sản phẩm nổi bật</h2>
     <div id="product-grid" class="product-grid"></div>
   </section>
+
+  <!-- SECTION TIN TỨC CÔNG NGHỆ + BẢNG XẾP HẠNG -->
+  <section class="news-ranking" id="news">
+    <div class="news-container">
+      <h2>📰 Tin tức công nghệ</h2>
+      <div id="newsList" class="news-grid">
+        <div class="loading">Đang tải tin tức...</div>
+      </div>
+    </div>
+    <div class="ranking-container">
+      <h2>🏆 Top linh kiện được quan tâm</h2>
+      <div id="rankingList" class="ranking-list">
+        <div class="loading">Đang tải dữ liệu...</div>
+      </div>
+    </div>
+  </section>
+
+  
 
   <!-- CART MODAL -->
   <div id="cartModal" class="modal">
@@ -79,18 +103,9 @@
       <button id="checkoutBtn">Thanh toán</button>
     </div>
   </div>
-  
-  <!-- Popup chào mừng -->
-<div id="welcomePopup" class="popup-overlay" style="display: none;">
-  <div class="popup-content">
-    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW1nN2xyd21weWZvMml5OGZxdDR5MW01MWRobG5iNjY3c3d5dmh2MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WhoNyvVjuB88HjDK0l/giphy.gif" alt="Welcome">
-    <p>Chào mừng bạn đến với PC Store!</p>
-  </div>
-</div>
 
   <script src="index.js"></script>
 </body>
-
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-container">

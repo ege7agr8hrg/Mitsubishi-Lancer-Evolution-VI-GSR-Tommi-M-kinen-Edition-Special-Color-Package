@@ -1,97 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Products</title>
+    <title>Quản lý sản phẩm - PC Store</title>
     <link rel="stylesheet" href="manage.css">
 </head>
 <body>
-    <div id="nav">
-        <img src="../fl c/help.gif" alt="" id="logo" width="70" height="70">
+    <!-- NAVBAR -->
+    <div class="nav-wrapper">
+        <div class="logo">
+            <img src="images/logo.png" alt="PC Store" height="40" onerror="this.style.display='none'">
+            <span class="logo-text">PC Store Admin</span>
+        </div>
         <div id="navcontent">
-            <button class="left" onclick="inputaccount()">Tài khoản</button>
-            <button class="right" onclick="inputshowcase()">Trình bày</button>
+            <button id="accountBtn">Tài khoản</button>
+            <button id="showcaseBtn">Trang chủ</button>
         </div>
     </div>
-<h1 style="margin-top: 150px; margin-left: 20px; font-size: 90px;">Quản lý</h1>
-    <div id="manage-container">
-        <div class="two-column">
-            <div class="manage-section">
-                <h2 id="formTitle">Thêm sản phẩm</h2>
-                <form id="productForm">
+
+    <div class="manage-container">
+        <div class="manage-header">
+            <h1>Quản lý sản phẩm</h1>
+        </div>
+
+        <!-- FORM THÊM/SỬA SẢN PHẨM -->
+        <div class="form-card">
+            <h2 id="formTitle">Thêm sản phẩm mới</h2>
+            <form id="productForm">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Tên sản phẩm *</label><br><br>
+                        <label>Tên sản phẩm *</label>
                         <input id="productName" type="text" required>
-                    </div><br>
+                    </div>
                     <div class="form-group">
-                        <label>Giá ($) *</label><br><br>
-                        <input id="productPrice" type="number" step="1" min="0" required>
-                    </div><br>
+                        <label>Giá (VNĐ) *</label>
+                        <input id="productPrice" type="number" step="1000" min="0" required>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Category *</label><br><br>
+                        <label>Danh mục *</label>
                         <select id="productCategory" required>
                             <option value="">Chọn loại sản phẩm</option>
+                            <option value="CPU">CPU</option>
+                            <option value="GPU">GPU</option>
                             <option value="RAM">RAM</option>
                             <option value="SSD">SSD</option>
                             <option value="HDD">HDD</option>
-                            <option value="Case">Vỏ</option>
-                            <option value="Cooler">Làm mát</option>
-                            <option value="PSU">PSU</option>
-                            <option value="Motherboard">Bo mạch chủ</option>
-                            <option value="GPU">GPU</option>
-                            <option value="CPU">CPU</option>
+                            <option value="Motherboard">Mainboard</option>
+                            <option value="PSU">Nguồn</option>
+                            <option value="Case">Case</option>
+                            <option value="Cooler">Tản nhiệt</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Ảnh(URL)</label><br><br>
-                        <input id="productImage" type="text" required>
-                    </div><br>
-                    <div class="form-group">
-                        <label>Số lượng *</label><br><br>
+                        <label>Số lượng *</label>
                         <input id="productQuantity" type="number" min="0" required>
-                    </div><br>
-                    <div class="form-group">
-                        <label>Tiêu đề</label><br><br>
-                        <textarea id="productDescription"></textarea>
-                    </div><br>
-                    <div style="display:flex;gap:8px">
-                        <button id="submitBtn" class="btn btn-primary">Thêm sản phẩm</button>
-                        <button type="button" class="btn" onclick="resetForm()">Xóa</button>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label>URL ảnh sản phẩm *</label>
+                    <input id="productImage" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả sản phẩm</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Thêm sản phẩm</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Xóa form</button>
+                </div>
+            </form>
         </div>
-    </div> 
 
-    <div id="manage-section">
-        <h2 style="font-weight: 800; font-size: 90px;">Danh sách</h2>
-        <div id="controls-wrapper">
-        <div id="Filter">
-            <select id="filterCategory">
-                <option value="">Tất cả</option>
-                <option value="RAM">RAM</option>
-                <option value="SSD">SSD</option>
-                <option value="HDD">HDD</option>
-                <option value="Case">Vỏ</option>
-                <option value="Cooler">Làm mát</option>
-                <option value="PSU">PSU</option>
-                <option value="Motherboard">Bo mạch chủ</option>
-                <option value="GPU">GPU</option>
-                <option value="CPU">CPU</option>
-            </select>
-        </div>
-        <div id="search">
-            <input id="searchInput" type="text" placeholder="Search...">
-        </div>
-        </div>
-        <div id="products-list">
-            <div class="empty-state">Chưa có sản phẩm nào</div>
+        <!-- DANH SÁCH SẢN PHẨM -->
+        <div class="list-card">
+            <div class="list-header">
+                <h2>Danh sách sản phẩm</h2>
+                <div class="list-controls">
+                    <select id="filterCategory">
+                        <option value="">Tất cả danh mục</option>
+                        <option value="CPU">CPU</option>
+                        <option value="GPU">GPU</option>
+                        <option value="RAM">RAM</option>
+                        <option value="SSD">SSD</option>
+                        <option value="HDD">HDD</option>
+                        <option value="Motherboard">Mainboard</option>
+                        <option value="PSU">Nguồn</option>
+                        <option value="Case">Case</option>
+                        <option value="Cooler">Tản nhiệt</option>
+                    </select>
+                    <input id="searchInput" type="text" placeholder="🔍 Tìm kiếm sản phẩm...">
+                </div>
+            </div>
+            <div id="products-list" class="products-list">
+                <div class="empty-state">Đang tải sản phẩm...</div>
+            </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-compat.js"></script>
-<script src="config.js"></script>
+    <script src="config.js"></script>
     <script src="manage.js"></script>
 </body>
 </html>

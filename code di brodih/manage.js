@@ -1,9 +1,9 @@
 let products = [];
 let editingId = null;
 let currentUid = null;
+let isAdmin = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Khởi tạo event cho form và filter
   const productForm = document.getElementById('productForm');
   if (productForm) {
     productForm.addEventListener('submit', (e) => {
@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     filterCategory.addEventListener('change', applyFilters);
   }
 
+  // Auth check
   firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
       window.location.href = '../log/reg/login.html';
       return;
     }
     try {
-      // Lấy role từ Firestore
       const userDoc = await db.collection('users').doc(user.uid).get();
       const role = userDoc.exists ? userDoc.data().role : 'user';
       if (role !== 'admin') {
@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       currentUid = user.uid;
-      await loadProducts(currentUid);
+      isAdmin = true;
+      await loadProducts(); // load tất cả sản phẩm vì là admin
       renderProductsList();
     } catch (error) {
       console.error('Lỗi kiểm tra quyền:', error);
@@ -60,18 +61,15 @@ function applyFilters() {
   renderProductsList(filtered);
 }
 
-async function loadProducts(uid) {
-  if (!uid) {
-    products = [];
-    return;
-  }
+async function loadProducts() {
+  // Admin: lấy tất cả sản phẩm (không filter theo owner)
   try {
-    const querySnapshot = await db.collection('products').where('owner', '==', uid).get();
+    const querySnapshot = await db.collection('products').get();
     products = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    localStorage.setItem('products_' + uid, JSON.stringify(products));
+    localStorage.setItem('products_all', JSON.stringify(products));
   } catch (error) {
-    console.error('Error loading from Firebase:', error);
-    const stored = localStorage.getItem('products_' + uid) || localStorage.getItem('products');
+    console.error('Error loading products:', error);
+    const stored = localStorage.getItem('products_all');
     products = stored ? JSON.parse(stored) : [];
   }
 }
@@ -91,14 +89,9 @@ async function saveProduct() {
 
   try {
     if (editingId !== null) {
-      // Cập nhật sản phẩm
+      // Cập nhật
       await db.collection('products').doc(editingId).update({
-        name,
-        price,
-        quantity,
-        category,
-        image: imageUrl,
-        description
+        name, price, quantity, category, image: imageUrl, description
       });
       const index = products.findIndex(p => p.id === editingId);
       if (index !== -1) {
@@ -108,34 +101,19 @@ async function saveProduct() {
       document.getElementById('formTitle').textContent = 'Thêm sản phẩm mới';
       document.getElementById('submitBtn').textContent = 'Thêm sản phẩm';
     } else {
-      // Thêm sản phẩm mới
-      const ownerId = currentUid;
+      // Thêm mới, owner là uid của admin hiện tại
       const docRef = await db.collection('products').add({
-        name,
-        price,
-        quantity,
-        category,
-        image: imageUrl,
-        description,
-        owner: ownerId
+        name, price, quantity, category, image: imageUrl, description,
+        owner: currentUid
       });
-      products.push({
-        id: docRef.id,
-        name,
-        price,
-        quantity,
-        category,
-        image: imageUrl,
-        description,
-        owner: ownerId
-      });
+      products.push({ id: docRef.id, name, price, quantity, category, image: imageUrl, description, owner: currentUid });
     }
-    localStorage.setItem('products_' + currentUid, JSON.stringify(products));
+    localStorage.setItem('products_all', JSON.stringify(products));
     applyFilters();
     resetForm();
     alert('Sản phẩm đã được lưu!');
   } catch (error) {
-    console.error('Error saving to Firebase:', error);
+    console.error('Error saving:', error);
     alert('Lỗi khi lưu: ' + error.message);
     // Fallback local
     if (editingId !== null) {
@@ -146,17 +124,9 @@ async function saveProduct() {
       editingId = null;
     } else {
       const newId = Date.now().toString();
-      products.push({
-        id: newId,
-        name,
-        price,
-        quantity,
-        category,
-        image: imageUrl,
-        description
-      });
+      products.push({ id: newId, name, price, quantity, category, image: imageUrl, description });
     }
-    localStorage.setItem('products_' + currentUid, JSON.stringify(products));
+    localStorage.setItem('products_all', JSON.stringify(products));
     applyFilters();
     resetForm();
   }
@@ -189,16 +159,12 @@ async function deleteProduct(id) {
   try {
     await db.collection('products').doc(id).delete();
     products = products.filter(p => p.id !== id);
-    localStorage.setItem('products_' + currentUid, JSON.stringify(products));
+    localStorage.setItem('products_all', JSON.stringify(products));
     applyFilters();
     alert('Đã xóa sản phẩm!');
   } catch (error) {
     console.error('Error deleting:', error);
     alert('Lỗi khi xóa: ' + error.message);
-    // Xóa local vẫn thực hiện
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem('products_' + currentUid, JSON.stringify(products));
-    applyFilters();
   }
 }
 
@@ -211,15 +177,15 @@ function renderProductsList(list) {
   }
   el.innerHTML = items.map(p => `
     <div class="product-card">
-      <img src="${escapeHtml(p.image || 'https://via.placeholder.com/150')}" alt="${escapeHtml(p.name)}" class="product-image">
+      <img src="${escapeHtml(p.image || 'https://via.placeholder.com/150')}" alt="${escapeHtml(p.name)}">
       <h3>${escapeHtml(p.name)}</h3>
       <div class="product-price">${Number(p.price).toLocaleString('vi-VN')}đ</div>
       <div class="product-category">${escapeHtml(p.category || 'Chưa phân loại')}</div>
       <div class="product-quantity">Tồn kho: ${p.quantity}</div>
-      ${p.description ? `<div class="product-description">${escapeHtml(p.description)}</div>` : ''}
+      ${p.description ? `<div class="product-description">${escapeHtml(p.description.substring(0, 80))}...</div>` : ''}
       <div class="product-actions">
-        <button class="btn btn-edit" onclick="editProduct('${p.id}')">Sửa</button>
-        <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Xóa</button>
+        <button class="btn-edit" onclick="editProduct('${p.id}')">Sửa</button>
+        <button class="btn-danger" onclick="deleteProduct('${p.id}')">Xóa</button>
       </div>
     </div>
   `).join('');
@@ -232,9 +198,10 @@ function escapeHtml(text) {
   });
 }
 
-function inputshowcase() {
-  window.location.href = 'index.html';
-}
-function inputaccount() {
+// Xử lý nút điều hướng
+document.getElementById('accountBtn')?.addEventListener('click', () => {
   window.location.href = 'account.html';
-}
+});
+document.getElementById('showcaseBtn')?.addEventListener('click', () => {
+  window.location.href = 'index.html';
+});   
